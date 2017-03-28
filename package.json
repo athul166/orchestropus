@@ -19,6 +19,7 @@
     "nid": "^0.3.2",
     "nunjucks": "^3.0.0",
     "redis": "^2.6.5",
+    "socket.io": "^1.7.3",
     "yamljs": "^0.2.8"
   },
   "devDependencies": {

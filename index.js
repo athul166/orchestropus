@@ -4,6 +4,11 @@ const config = require('./config');
 const getAmqpConnection = require('./getAmqpConnection');
 var amqp = require('amqplib/callback_api');
 
+const app = express();
+var allowedOrigins = "http://localhost:* http://127.0.0.1:*";
+var server = require('http').Server(app);
+var io = require('socket.io')(server, {origin: allowedOrigins});
+
 const registerWorker = require('./registerWorker');
 const initializeJob = require('./workers/initializeJob');
 const jobScheduler = require('./workers/jobScheduler');
@@ -14,8 +19,6 @@ registerWorker('qM', initializeJob);
 registerWorker('scheduleJob', jobScheduler);
 registerWorker('scheduleStage', stageScheduler);
 registerWorker('results', resultsProcessor);
-
-const app = express();
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -39,6 +42,7 @@ app.post('/api/v1/jobs', (req, res) => {
 
         ch.consume(q.queue, function(msg) {
           console.log(" [x] Live from queue %s", msg.content.toString());
+          io.emit('result',msg.content.toString());
         }, {noAck: true});
       });
     });
@@ -66,7 +70,7 @@ app.post('/api/v1/jobs', (req, res) => {
 });
 
 const port = config.PORT || 4070;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('Express server listening on port: ', port);
 });
 
@@ -79,21 +83,3 @@ function getAmqpChannel(connection, callback) {
     callback(null, channel);
   });
 }
-
-
-// amqp.connect('amqp://localhost', function(err, conn) {
-//   conn.createChannel(function(err, ch) {
-//     var ex = 'logs';
-//
-//     ch.assertExchange(ex, 'fanout', {durable: false});
-//
-//     ch.assertQueue('', {exclusive: true}, function(err, q) {
-//       console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
-//       ch.bindQueue(q.queue, ex, '');
-//
-//       ch.consume(q.queue, function(msg) {
-//         console.log(" [x] %s", msg.content.toString());
-//       }, {noAck: true});
-//     });
-//   });
-// });
