@@ -1,0 +1,5 @@
+#!/bin/sh
+cd $WORKSPACE
+echo GRUNTSCRIPTSTARTED
+grunt 
+grunt test --force

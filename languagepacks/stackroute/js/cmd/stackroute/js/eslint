@@ -1,0 +1,26 @@
+#!/bin/sh
+echo ESLINTSCRIPTSTARTED
+if [ -f $WORKSPACE'/.eslintrc' ] || [ -f $WORKSPACE'/.eslintrc.yml' ] || [-f $WORKSPACE'/.eslintrc.json' ]
+then
+ cd $WORKSPACE
+ echo HASESLINTRC
+ eslint $INCLUDE
+elif [ -f $WORKSPACE'/package.json' ] 
+then
+  cat package.json|grep eslintConfig|wc -l
+  if [ wc -eq 1 ]
+  then
+  cd $WORKSPACE 
+  eslint $INCLUDE
+  fi
+else
+  cp /languagepack-languagepack/.eslintrc $WORKSPACE
+  cd $WORKSPACE
+  eslint $INCLUDE
+fi
+
+
+
+
+
+

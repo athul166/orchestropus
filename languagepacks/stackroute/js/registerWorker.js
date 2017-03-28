@@ -11,7 +11,6 @@ module.exports = function(queue, worker) {
       channel.consume(queue, (msgBuffer) => {
         try {
           const msg = JSON.parse(msgBuffer.content.toString());
-          //console.log("MSG =====> "+msgBuffer.content.toString());
           worker(msg, (err) => {
             if(err) { channel.nack(msgBuffer); return; }
             channel.ack(msgBuffer);

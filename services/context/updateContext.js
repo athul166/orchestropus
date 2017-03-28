@@ -4,5 +4,6 @@ module.exports = function(jobId, contextPatch, callback) {
   const contextKey = jobId + ':context';
 
   // FIXME: For correct implementation, need to Retrieve, Patch, and update, with version control checks.
+  console.log("CONTEXT PATCH ===> "+contextPatch);
   client.set(contextKey, JSON.stringify(contextPatch), callback);
 };

@@ -22,7 +22,6 @@ module.exports = function(jobId, stageName, stage, payload, exitCode, stdout, do
 
   const payloadString = JSON.stringify(stage.output.payload);
   const payloadPatch = nunjucks.renderString(payloadString, {OUTPUT});
-
   _.merge(payload, JSON.parse(payloadPatch));
 
   // FIXME: Send only patch, when supported by services/payload/updatePayload.js

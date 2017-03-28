@@ -6,9 +6,29 @@ services:
     network_mode: host
     volumes:
       - /tmp:/workspaces
+    environment:
+      QUEUE-NAME: stackroute/git
   javascript:
     image: languagepack-javascript:0.1.0
     build: stackroute/javascript
     network_mode: host
     volumes:
       - /tmp:/workspaces
+    environment:
+      QUEUE-NAME: stackroute/javascript
+  firstbuild:
+    image: languagepack-firstbuild:0.1.0
+    build: stackroute/firstbuild
+    network_mode: host
+    volumes:
+      - /tmp:/workspaces
+    environment:
+      QUEUE-NAME: stackroute/firstbuild
+  js:
+    image: languagepack-js:0.1.0
+    build: stackroute/js
+    network_mode: host
+    volumes:
+      - /tmp:/workspaces
+    environment:
+      QUEUE-NAME: stackroute/js

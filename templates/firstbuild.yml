@@ -1,0 +1,20 @@
+version: '1'
+stages:
+  gitClone:
+    type: stackroute/firstbuild/clone
+    input:
+      REPOSITORY_URL: "{{payload.repoUrl}}"
+      BRANCH: "{{payload.repo_ref}}"
+      WORKSPACE: "{{context.WORKSPACE}}"
+  build:
+    type: stackroute/firstbuild/build
+    depends_on:
+      - gitClone
+  code-coverage:
+    type: stackroute/firstbuild/istanbul
+    input:
+      INCLUDE: "{{payload.codecoverage.include}}"
+      EXCLUDE: "{{payload.codecoverage.exclude}}"
+    context:
+    depends_on:
+      - build

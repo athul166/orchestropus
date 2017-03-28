@@ -1,0 +1,18 @@
+version: '1'
+stages:
+  gitClone:
+    type: stackroute/js/git_clone
+    input:
+      REPOSITORY_URL: "{{payload.repoUrl}}"
+      BRANCH: master
+  build:
+     type: stackroute/js/build
+     depends_on:
+      - gitClone
+  whitebox:
+     type: stackroute/js/testing
+     depends_on:
+      - build
+  
+  
+  
