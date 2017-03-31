@@ -1,0 +1,12 @@
+version: '1'
+stages:
+  gitClone:
+    type: stackroute/bluebird/git_clone
+    input:
+      REPOSITORY_URL: "{{payload.repoUrl}}"
+      BRANCH: master
+  build:
+     type: stackroute/bluebird/build
+     depends_on:
+      - gitClone
+ 

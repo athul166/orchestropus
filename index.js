@@ -25,8 +25,11 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
+// io.on('connection',function(){
+//   console.log("established");
+// });
 app.use(require('body-parser').json());
+
 
 app.post('/api/v1/jobs', (req, res) => {
   // listening to queue for stagesname and status
@@ -37,12 +40,16 @@ app.post('/api/v1/jobs', (req, res) => {
       ch.assertExchange(ex, 'fanout', {durable: false});
 
       ch.assertQueue('', {exclusive: true}, function(err, q) {
-        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
+        //console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
         ch.bindQueue(q.queue, ex, '');
 
         ch.consume(q.queue, function(msg) {
           console.log(" [x] Live from queue %s", msg.content.toString());
-          io.emit('result',msg.content.toString());
+          var result=JSON.parse(msg.content.toString());
+        //  io.on('connection',function(){
+          //  console.log("established");
+            io.emit('result',result);
+          //});
         }, {noAck: true});
       });
     });

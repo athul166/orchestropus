@@ -20,6 +20,6 @@ module.exports = function(jobId, stageName, stage, callback) {
     });
   });
   // FIXME: For correct implementation, need to Retrieve, Patch, and update, with version control checks.
-  //console.log("STAGE NAME ===>"+stageName+" Stage===> "+JSON.stringify(stage.status));
+  //console.log("STAGE NAME ===>"+stageName+" Stage===> "+JSON.stringify(str.jobId));
   client.hset(stagesKey, stageName, JSON.stringify(stage), callback);
 };
