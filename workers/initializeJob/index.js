@@ -21,9 +21,8 @@ module.exports = function({payload, template, templateName}, callback) {
     scheduleJob(jobId, callback);
   });
 };
-//
-// };
-//
+
+
 // function initializeJob(template, payload) {
 //
 // }
